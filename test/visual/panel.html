@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="../../media/webview.css">
+<title>Panel visual check</title>
+</head>
+<body class="lc-panel">
+<div id="app"></div>
+<script src="theme.js"></script>
+<script>
+window.__onReady = () => {
+  const now = Date.now();
+  const runs = [
+    { id: 'r1', task: 'explain', title: 'Explain · DoorLock.Awake', subtitle: 'Assets/Scripts/Doors/DoorLock.cs:84-90 · qwen3.5:9b', status: 'done', createdAt: now - 60000,
+      content: '### 1. Purpose\nInitialises the lock by fetching the `Door` component next to it.\n\n### 2. How it works\n* **L85**: gets `Door` with `GetComponent`.\n* **L86-L88**: warns when no door is found.\n* See also `Assets/Scripts/Doors/Door.cs:233-246`.\n\n```csharp\ndoor = GetComponent<Door>();\nif (door == null) Debug.LogWarning("no door");\n```\n\n| Input | Effect |\n|---|---|\n| none | adds `this` to `all` |',
+      actions: [{ id: 'copy', label: 'Copy' }], stats: { model: 'qwen3.5:9b', seconds: 18.5, outputTokens: 790, tokensPerSecond: 43 } },
+    { id: 'r2', task: 'security', title: 'Security · find_user', subtitle: 'src/auth.py:9-13 · qwen3.5:9b', status: 'done', createdAt: now - 30000,
+      content: 'The query is built with an f-string from a request parameter.\n\n**2** issue(s) to look at (false positives are struck through).',
+      findings: [
+        { id: 'S1', severity: 'critical', title: 'Potential SQL injection', line: 12, path: 'src/auth.py', cwe: 'CWE-89', confidence: 'high', source: 'static+llm', verdict: 'confirmed', category: 'security', explanation: 'User-controlled input reaches SQL query construction.\n\n**AI verdict (confirmed):** `name` comes from `request.args` without parameterisation.', suggestion: 'Use a parameterised query: `cursor.execute("SELECT * FROM users WHERE name = ?", (name,))`' },
+        { id: 'S2', severity: 'medium', title: 'Weak hash (MD5)', line: 20, path: 'src/auth.py', cwe: 'CWE-328', confidence: 'medium', source: 'static+llm', verdict: 'false_positive', explanation: 'MD5 used.\n\n**AI verdict (false positive):** used for a cache key, not for passwords.', suggestion: 'Use SHA-256.' },
+        { id: 'A1', severity: 'medium', title: 'Connection never closed', line: 10, path: 'src/auth.py', cwe: 'CWE-404', confidence: 'medium', source: 'llm', explanation: '`conn` is not closed.', suggestion: 'Use a `with` block.' },
+      ],
+      actions: [{ id: 'rerunReasoning', label: 'Re-run with deep reasoning (slower)' }, { id: 'clearFindings', label: 'Clear highlights' }], stats: { model: 'qwen3.5:9b', seconds: 9.7, outputTokens: 410, tokensPerSecond: 42 } },
+    { id: 'r3', task: 'refactor', title: 'Refactor · average', subtitle: 'src/math.ts:5-11 · use reduce · qwen3.5:9b', status: 'done', createdAt: now - 10000,
+      content: 'Here is the refactor:\n```ts\nexport function average(values: number[]): number {\n  if (values.length === 0) return 0;\n  return values.reduce((sum, v) => sum + v, 0) / values.length;\n}\n```\nUses reduce and handles empty arrays.',
+      actions: [{ id: 'apply', label: 'Apply', kind: 'primary' }, { id: 'diff', label: 'Show diff' }, { id: 'discard', label: 'Discard' }], stats: { model: 'qwen3.5:9b', seconds: 6.1, outputTokens: 120, tokensPerSecond: 44 } },
+    { id: 'r4', task: 'codebase', title: '@codebase · Where are doors locked and unlocked?', subtitle: '12 excerpt(s) · semantic + keyword search · qwen3.5:9b', status: 'running', createdAt: now, thinking: 'The user asks about door locks. DoorLock.cs has Lock and Unlock…', content: 'Doors are locked through `DoorLock.Lock` (`Assets/Scripts/Doors/DoorLock.cs:137-144`) and unlocked by' },
+  ];
+  window.postMessage({ type: 'init', runs }, '*');
+};
+</script>
+<script src="../../dist/webview/panel.js"></script>
+</body>
+</html>
