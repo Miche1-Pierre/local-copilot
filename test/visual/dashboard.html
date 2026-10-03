@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="../../media/webview.css">
+<title>Dashboard visual check</title>
+</head>
+<body class="lc-dashboard">
+<div id="app"></div>
+<script src="theme.js"></script>
+<script>
+window.__onReady = () => {
+  const now = Date.now();
+  window.postMessage({ type: 'state', state: {
+    connection: { provider: 'ollama', endpoint: 'http://127.0.0.1:11434', reachable: true, version: '0.35.1', localOnly: { ok: true, detail: 'Loopback only: http://127.0.0.1:11434 → 127.0.0.1' } },
+    exposure: { bind: 'all-interfaces', bindValue: '0.0.0.0:11434', cloudDisabled: false, warnings: [
+      'OLLAMA_HOST=0.0.0.0:11434 makes the Ollama server reachable from your local network: anyone on it can send prompts or read your model list. Set OLLAMA_HOST=127.0.0.1:11434 unless you need LAN access.',
+      'Ollama cloud features are not disabled. Local Copilot never selects cloud models, but you can lock the server itself with OLLAMA_NO_CLOUD=1.' ] },
+    roles: {
+      autocomplete: { model: 'qwen2.5-coder:3b-base', installed: true, fimSupport: 'good' },
+      chat: { model: 'qwen3.5:9b', installed: true },
+      embeddings: { model: 'qwen3-embedding:0.6b', installed: true },
+    },
+    installed: [
+      { name: 'qwen2.5-coder:3b-base', sizeGB: 1.8, parameterSize: '3.1B', quantization: 'Q4_K_M', capabilities: ['completion', 'insert'], remote: false, roles: ['autocomplete'] },
+      { name: 'qwen2.5-coder:7b-base', sizeGB: 4.4, parameterSize: '7.6B', quantization: 'Q4_K_M', capabilities: ['completion', 'insert'], remote: false, roles: [] },
+      { name: 'qwen3.5:9b', sizeGB: 6.1, parameterSize: '9B', quantization: 'Q4_K_M', capabilities: ['completion', 'vision', 'tools', 'thinking'], remote: false, roles: ['chat'] },
+      { name: 'qwen3-embedding:0.6b', sizeGB: 0.6, parameterSize: '0.6B', quantization: 'Q8_0', capabilities: ['embedding'], remote: false, roles: ['embeddings'] },
+      { name: 'qwen3:14b', sizeGB: 8.6, parameterSize: '14.8B', quantization: 'Q4_K_M', capabilities: ['completion', 'tools', 'thinking'], remote: false, roles: [] },
+      { name: 'gpt-oss:120b-cloud', capabilities: ['completion'], remote: true, roles: [] },
+    ],
+    loaded: [ { name: 'qwen2.5-coder:3b-base', sizeGB: 1.9, vramGB: 1.9, contextLength: 4096, until: new Date(now + 25 * 60000).toISOString() },
+              { name: 'qwen3.5:9b', sizeGB: 5.9, vramGB: 5.1, contextLength: 16384, until: new Date(now + 9 * 60000).toISOString() } ],
+    hardware: { summary: 'NVIDIA GeForce RTX 5070 Laptop GPU (8.0 GB) · 32 GB RAM · Intel(R) Core(TM) 7 240H → 6-10 GB GPU', gpus: [{ name: 'NVIDIA GeForce RTX 5070 Laptop GPU', vramGB: 8 }], ramGB: 32, cpu: 'Intel(R) Core(TM) 7 240H' },
+    recommendation: {
+      autocomplete: { model: 'qwen2.5-coder:3b-base', reason: 'Measured on an 8 GB laptop GPU: ~390 ms per line, as accurate as the 7B, twice as fast.', installed: true, sizeGB: 1.9 },
+      chat: { model: 'qwen3.5:9b', reason: 'Newest generation that fits a mid-range GPU; ~40 tok/s with a 16k context.', installed: true, sizeGB: 6.6 },
+      embeddings: { model: 'qwen3-embedding:0.6b', reason: 'Small, strong on code retrieval, 1024-dim vectors.', installed: false, sizeGB: 0.6 },
+      notes: ['The completion and intelligence models (8.5 GB) do not fit together in 8 GB of VRAM: Ollama swaps them.'],
+    },
+    index: { enabled: true, status: 'embedding', files: 554, symbols: 12061, chunks: 7151, embedded: 3120, message: 'Embedding 7151 chunks with qwen3-embedding:0.6b…' },
+    metrics: { inline: { requests: 412, shown: 260, accepted: 71, acceptanceRate: 0.273, cacheHits: 88, p50Ms: 362, p95Ms: 690, avgTokensPerSecond: 121, errors: 1, cancelled: 64 },
+               chat: { requests: 9, p50Ms: 11200, avgFirstTokenMs: 1800, avgTokensPerSecond: 42, errors: 0 },
+               embeddings: { requests: 196, vectors: 3120, errors: 0 },
+               recent: Array.from({ length: 8 }, (_, i) => ({ ts: now - i * 9000, kind: i % 3 ? 'inline' : 'security', model: i % 3 ? 'qwen2.5-coder:3b-base' : 'qwen3.5:9b', ms: i % 3 ? 300 + i * 20 : 9800, tokens: i % 3 ? 12 : 410, tps: i % 3 ? 120 : 42, outcome: i === 4 ? 'cancelled' : 'ok' })) },
+    pulls: [ { model: 'qwen3-embedding:0.6b', status: 'pulling 06e3bb1e', percent: 42 } ],
+    settings: { autocompleteEnabled: true, multiline: 'auto', debounceMs: 120, reasoning: 'off', embeddingsEnabled: true, securityLlmReview: true },
+  } }, '*');
+  setTimeout(() => window.postMessage({ type: 'testResult', role: 'autocomplete', ok: true, message: '142 ms → "return a + b"' }, '*'), 100);
+};
+</script>
+<script src="../../dist/webview/dashboard.js"></script>
+</body>
+</html>
