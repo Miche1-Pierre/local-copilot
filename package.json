@@ -1,0 +1,742 @@
+{
+  "name": "local-copilot",
+  "displayName": "Local Copilot",
+  "description": "Copilot-style inline completion, comment-to-code and code intelligence running 100% on your machine (Ollama, LM Studio, llama.cpp). No cloud, no telemetry.",
+  "version": "0.1.0",
+  "publisher": "miche1pierre",
+  "author": "Miche1-Pierre",
+  "license": "MIT",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Miche1-Pierre/local-copilot.git"
+  },
+  "homepage": "https://github.com/Miche1-Pierre/local-copilot#readme",
+  "bugs": {
+    "url": "https://github.com/Miche1-Pierre/local-copilot/issues"
+  },
+  "engines": {
+    "vscode": "^1.105.0"
+  },
+  "categories": [
+    "AI",
+    "Programming Languages",
+    "Linters",
+    "Machine Learning"
+  ],
+  "keywords": [
+    "ollama",
+    "local",
+    "offline",
+    "autocomplete",
+    "copilot",
+    "fim",
+    "llm",
+    "privacy"
+  ],
+  "icon": "media/icon.png",
+  "main": "./dist/extension.js",
+  "extensionKind": [
+    "ui",
+    "workspace"
+  ],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "capabilities": {
+    "untrustedWorkspaces": {
+      "supported": "limited",
+      "description": "In untrusted workspaces the codebase index and git context are disabled; inline completion still works on open files."
+    },
+    "virtualWorkspaces": {
+      "supported": "limited",
+      "description": "Git context is unavailable in virtual workspaces."
+    }
+  },
+  "contributes": {
+    "commands": [
+      {
+        "command": "localCopilot.showActions",
+        "title": "Actions…",
+        "category": "Local Copilot",
+        "icon": "$(sparkle)"
+      },
+      {
+        "command": "localCopilot.statusMenu",
+        "title": "Status & Quick Settings",
+        "category": "Local Copilot"
+      },
+      {
+        "command": "localCopilot.explain",
+        "title": "Explain This Code",
+        "category": "Local Copilot"
+      },
+      {
+        "command": "localCopilot.review",
+        "title": "Review This Code",
+        "category": "Local Copilot"
+      },
+      {
+        "command": "localCopilot.securityReview",
+        "title": "Security Review",
+        "category": "Local Copilot"
+      },
+      {
+        "command": "localCopilot.generateTests",
+        "title": "Generate Tests",
+        "category": "Local Copilot"
+      },
+      {
+        "command": "localCopilot.refactor",
+        "title": "Refactor…",
+        "category": "Local Copilot"
+      },
+      {
+        "command": "localCopilot.fix",
+        "title": "Fix / Why Is This Failing?",
+        "category": "Local Copilot"
+      },
+      {
+        "command": "localCopilot.document",
+        "title": "Write Documentation Comment",
+        "category": "Local Copilot"
+      },
+      {
+        "command": "localCopilot.generateFromComment",
+        "title": "Generate Code From Comment",
+        "category": "Local Copilot"
+      },
+      {
+        "command": "localCopilot.askCodebase",
+        "title": "Ask the Codebase (@codebase)…",
+        "category": "Local Copilot",
+        "icon": "$(search)"
+      },
+      {
+        "command": "localCopilot.toggleAutocomplete",
+        "title": "Toggle Inline Completion",
+        "category": "Local Copilot"
+      },
+      {
+        "command": "localCopilot.toggleAutocompleteForLanguage",
+        "title": "Toggle Inline Completion For Current Language",
+        "category": "Local Copilot"
+      },
+      {
+        "command": "localCopilot.snooze",
+        "title": "Snooze Inline Completion (15 min)",
+        "category": "Local Copilot"
+      },
+      {
+        "command": "localCopilot.selectAutocompleteModel",
+        "title": "Select Autocomplete Model",
+        "category": "Local Copilot"
+      },
+      {
+        "command": "localCopilot.selectChatModel",
+        "title": "Select Code Intelligence Model",
+        "category": "Local Copilot"
+      },
+      {
+        "command": "localCopilot.selectEmbeddingModel",
+        "title": "Select Embedding Model",
+        "category": "Local Copilot"
+      },
+      {
+        "command": "localCopilot.openDashboard",
+        "title": "Open Dashboard (Models, Privacy, Metrics)",
+        "category": "Local Copilot",
+        "icon": "$(dashboard)"
+      },
+      {
+        "command": "localCopilot.openPanel",
+        "title": "Show Results Panel",
+        "category": "Local Copilot"
+      },
+      {
+        "command": "localCopilot.rebuildIndex",
+        "title": "Rebuild Codebase Index",
+        "category": "Local Copilot"
+      },
+      {
+        "command": "localCopilot.verifyLocalOnly",
+        "title": "Verify Local-Only Setup",
+        "category": "Local Copilot",
+        "icon": "$(shield)"
+      },
+      {
+        "command": "localCopilot.showLogs",
+        "title": "Show Logs",
+        "category": "Local Copilot"
+      },
+      {
+        "command": "localCopilot.clearMetrics",
+        "title": "Clear Local Metrics",
+        "category": "Local Copilot"
+      },
+      {
+        "command": "localCopilot.clearFindings",
+        "title": "Clear Review Findings",
+        "category": "Local Copilot"
+      },
+      {
+        "command": "localCopilot.applyProposal",
+        "title": "Apply Proposed Change",
+        "category": "Local Copilot",
+        "icon": "$(check)"
+      },
+      {
+        "command": "localCopilot.discardProposal",
+        "title": "Discard Proposed Change",
+        "category": "Local Copilot",
+        "icon": "$(close)"
+      },
+      {
+        "command": "localCopilot.runDirective",
+        "title": "Run Comment Directive",
+        "category": "Local Copilot"
+      },
+      {
+        "command": "localCopilot.fixFinding",
+        "title": "Fix This Finding",
+        "category": "Local Copilot"
+      },
+      {
+        "command": "localCopilot.acceptedCompletion",
+        "title": "Accepted Completion (internal)",
+        "category": "Local Copilot"
+      }
+    ],
+    "submenus": [
+      {
+        "id": "localCopilot.editorContext",
+        "label": "Local Copilot"
+      }
+    ],
+    "menus": {
+      "editor/context": [
+        {
+          "submenu": "localCopilot.editorContext",
+          "group": "1_modification@0"
+        }
+      ],
+      "localCopilot.editorContext": [
+        {
+          "command": "localCopilot.explain",
+          "group": "1_understand@1"
+        },
+        {
+          "command": "localCopilot.askCodebase",
+          "group": "1_understand@2"
+        },
+        {
+          "command": "localCopilot.review",
+          "group": "2_analyze@1"
+        },
+        {
+          "command": "localCopilot.securityReview",
+          "group": "2_analyze@2"
+        },
+        {
+          "command": "localCopilot.fix",
+          "group": "2_analyze@3"
+        },
+        {
+          "command": "localCopilot.refactor",
+          "group": "3_change@1",
+          "when": "!editorReadonly"
+        },
+        {
+          "command": "localCopilot.document",
+          "group": "3_change@2",
+          "when": "!editorReadonly"
+        },
+        {
+          "command": "localCopilot.generateTests",
+          "group": "3_change@3"
+        },
+        {
+          "command": "localCopilot.generateFromComment",
+          "group": "3_change@4",
+          "when": "!editorReadonly"
+        }
+      ],
+      "editor/title": [
+        {
+          "command": "localCopilot.applyProposal",
+          "group": "navigation@1",
+          "when": "resourceScheme == local-copilot-proposal"
+        },
+        {
+          "command": "localCopilot.discardProposal",
+          "group": "navigation@2",
+          "when": "resourceScheme == local-copilot-proposal"
+        }
+      ],
+      "commandPalette": [
+        {
+          "command": "localCopilot.applyProposal",
+          "when": "resourceScheme == local-copilot-proposal"
+        },
+        {
+          "command": "localCopilot.discardProposal",
+          "when": "resourceScheme == local-copilot-proposal"
+        },
+        {
+          "command": "localCopilot.runDirective",
+          "when": "false"
+        },
+        {
+          "command": "localCopilot.fixFinding",
+          "when": "false"
+        },
+        {
+          "command": "localCopilot.acceptedCompletion",
+          "when": "false"
+        }
+      ]
+    },
+    "keybindings": [
+      {
+        "command": "localCopilot.showActions",
+        "key": "ctrl+alt+l",
+        "mac": "cmd+alt+l",
+        "when": "editorTextFocus"
+      },
+      {
+        "command": "localCopilot.generateFromComment",
+        "key": "ctrl+alt+enter",
+        "mac": "cmd+alt+enter",
+        "when": "editorTextFocus && !editorReadonly && !inlineSuggestionVisible"
+      },
+      {
+        "command": "localCopilot.askCodebase",
+        "key": "ctrl+alt+k",
+        "mac": "cmd+alt+k"
+      }
+    ],
+    "configuration": [
+      {
+        "title": "Connection & privacy",
+        "order": 1,
+        "properties": {
+          "localCopilot.provider": {
+            "type": "string",
+            "enum": [
+              "ollama",
+              "lmstudio",
+              "llamacpp",
+              "openai-compatible"
+            ],
+            "enumDescriptions": [
+              "Ollama native API (recommended).",
+              "LM Studio local server (OpenAI-compatible API).",
+              "llama.cpp `llama-server` (native /infill for completion).",
+              "Any other local OpenAI-compatible server (vLLM, LocalAI, …)."
+            ],
+            "default": "ollama",
+            "scope": "machine",
+            "markdownDescription": "Local inference server used by every role unless a role overrides it."
+          },
+          "localCopilot.endpoint": {
+            "type": "string",
+            "default": "",
+            "scope": "machine",
+            "markdownDescription": "Base URL of the local server. Empty = provider default (`http://127.0.0.1:11434` for Ollama, `:1234` for LM Studio, `:8080` for llama.cpp). **Only loopback addresses (127.0.0.0/8, ::1, localhost) are accepted**; anything else is refused before any request is sent."
+          }
+        }
+      },
+      {
+        "title": "Inline completion",
+        "order": 2,
+        "properties": {
+          "localCopilot.autocomplete.enabled": {
+            "type": "boolean",
+            "default": true,
+            "description": "Show ghost-text completions while typing."
+          },
+          "localCopilot.autocomplete.model": {
+            "type": "string",
+            "default": "qwen2.5-coder:3b-base",
+            "markdownDescription": "Fast fill-in-the-middle model. Use a **base** (non-instruct) code model: `qwen2.5-coder:*-base` is the reference."
+          },
+          "localCopilot.autocomplete.provider": {
+            "type": "string",
+            "enum": [
+              "inherit",
+              "ollama",
+              "lmstudio",
+              "llamacpp",
+              "openai-compatible"
+            ],
+            "default": "inherit",
+            "scope": "machine",
+            "description": "Override the server for completion only (e.g. llama.cpp for completion, Ollama for the rest)."
+          },
+          "localCopilot.autocomplete.endpoint": {
+            "type": "string",
+            "default": "",
+            "scope": "machine",
+            "description": "Endpoint override for completion only (loopback only). Empty = inherit."
+          },
+          "localCopilot.autocomplete.fimTemplate": {
+            "type": "string",
+            "enum": [
+              "auto",
+              "qwen",
+              "starcoder",
+              "codellama",
+              "deepseek",
+              "codestral",
+              "codegemma",
+              "native",
+              "custom"
+            ],
+            "enumDescriptions": [
+              "Detect from the model name, else use the server's native suffix support.",
+              "<|fim_prefix|> … with repository context (Qwen2.5-Coder, Qwen3-Coder).",
+              "<fim_prefix> … with repository context (StarCoder2, Granite, CodeQwen1.5).",
+              "<PRE> <SUF> <MID> (CodeLlama).",
+              "DeepSeek-Coder FIM tokens.",
+              "[SUFFIX] [PREFIX] (Codestral).",
+              "CodeGemma FIM tokens.",
+              "Let Ollama apply the model template with its `suffix` parameter.",
+              "Use `localCopilot.autocomplete.customTemplate`."
+            ],
+            "default": "auto",
+            "description": "Fill-in-the-middle prompt format."
+          },
+          "localCopilot.autocomplete.customTemplate": {
+            "type": "string",
+            "default": "<|fim_prefix|>{context}{prefix}<|fim_suffix|>{suffix}<|fim_middle|>",
+            "markdownDescription": "Custom FIM template. Placeholders: `{prefix}`, `{suffix}`, `{context}` (snippets as comments), `{path}`."
+          },
+          "localCopilot.autocomplete.customStop": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "default": [],
+            "description": "Extra stop sequences for the custom template."
+          },
+          "localCopilot.autocomplete.debounceMs": {
+            "type": "number",
+            "default": 120,
+            "minimum": 0,
+            "maximum": 2000,
+            "description": "Pause after the last keystroke before asking the model (ms)."
+          },
+          "localCopilot.autocomplete.multiline": {
+            "type": "string",
+            "enum": [
+              "auto",
+              "always",
+              "never"
+            ],
+            "default": "auto",
+            "description": "auto: multi-line after a block opener, an empty line or a comment; single line in the middle of a statement."
+          },
+          "localCopilot.autocomplete.maxTokens": {
+            "type": "number",
+            "default": 48,
+            "minimum": 8,
+            "maximum": 512,
+            "description": "Max generated tokens for a single-line completion."
+          },
+          "localCopilot.autocomplete.maxTokensMultiline": {
+            "type": "number",
+            "default": 256,
+            "minimum": 16,
+            "maximum": 1024,
+            "description": "Max generated tokens for a multi-line completion (comment-to-code, block bodies)."
+          },
+          "localCopilot.autocomplete.maxLines": {
+            "type": "number",
+            "default": 30,
+            "minimum": 1,
+            "maximum": 200,
+            "description": "Hard cap on the number of lines of a multi-line suggestion."
+          },
+          "localCopilot.autocomplete.temperature": {
+            "type": "number",
+            "default": 0.1,
+            "minimum": 0,
+            "maximum": 1.5
+          },
+          "localCopilot.autocomplete.contextLength": {
+            "type": "number",
+            "default": 4096,
+            "minimum": 1024,
+            "maximum": 32768,
+            "markdownDescription": "Model context window (`num_ctx`) for completion. Keep it small: it is the main latency driver."
+          },
+          "localCopilot.autocomplete.prefixTokens": {
+            "type": "number",
+            "default": 1600,
+            "description": "Budget (approx. tokens) for code before the cursor."
+          },
+          "localCopilot.autocomplete.suffixTokens": {
+            "type": "number",
+            "default": 400,
+            "description": "Budget (approx. tokens) for code after the cursor."
+          },
+          "localCopilot.autocomplete.repoContextTokens": {
+            "type": "number",
+            "default": 1000,
+            "description": "Budget (approx. tokens) for repository context: definitions of nearby symbols, imported files, similar code from open editors. 0 disables it."
+          },
+          "localCopilot.autocomplete.keepAlive": {
+            "type": "string",
+            "default": "30m",
+            "description": "How long the server keeps the completion model loaded after the last request."
+          },
+          "localCopilot.autocomplete.disabledLanguages": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "default": [
+              "plaintext",
+              "markdown",
+              "scminput",
+              "log",
+              "csv",
+              "tsv"
+            ],
+            "description": "Language ids where inline completion stays off."
+          }
+        }
+      },
+      {
+        "title": "Code intelligence",
+        "order": 3,
+        "properties": {
+          "localCopilot.chat.model": {
+            "type": "string",
+            "default": "qwen3.5:9b",
+            "description": "Instruction model for explain, review, security, tests, refactor, fix, comment-to-code and codebase questions."
+          },
+          "localCopilot.chat.provider": {
+            "type": "string",
+            "enum": [
+              "inherit",
+              "ollama",
+              "lmstudio",
+              "llamacpp",
+              "openai-compatible"
+            ],
+            "default": "inherit",
+            "scope": "machine",
+            "description": "Override the server for code intelligence only."
+          },
+          "localCopilot.chat.endpoint": {
+            "type": "string",
+            "default": "",
+            "scope": "machine",
+            "description": "Endpoint override for code intelligence only (loopback only). Empty = inherit."
+          },
+          "localCopilot.chat.taskModels": {
+            "type": "object",
+            "default": {},
+            "properties": {
+              "explain": {
+                "type": "string"
+              },
+              "review": {
+                "type": "string"
+              },
+              "security": {
+                "type": "string"
+              },
+              "tests": {
+                "type": "string"
+              },
+              "refactor": {
+                "type": "string"
+              },
+              "fix": {
+                "type": "string"
+              },
+              "document": {
+                "type": "string"
+              },
+              "generate": {
+                "type": "string"
+              },
+              "codebase": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": false,
+            "markdownDescription": "Per-task model override, e.g. `{ \"security\": \"qwen3:14b\" }`. Unset tasks use `localCopilot.chat.model`."
+          },
+          "localCopilot.chat.reasoning": {
+            "type": "string",
+            "enum": [
+              "off",
+              "deep",
+              "always"
+            ],
+            "enumDescriptions": [
+              "Never ask thinking models to reason first (fastest; a 'Re-run with deep reasoning' button is offered on reviews).",
+              "Reason only for security review, code review, fix and codebase questions.",
+              "Reason for every task (slowest)."
+            ],
+            "default": "off",
+            "markdownDescription": "Use the 'thinking' mode of models that support it. On an 8 GB GPU, reasoning turns a ~10 s review into ~70 s: keep `off` and use the re-run button when you want depth."
+          },
+          "localCopilot.chat.language": {
+            "type": "string",
+            "default": "auto",
+            "markdownDescription": "Language of explanations (`auto` = VS Code's display language, or e.g. `French`, `English`). Code is never translated."
+          },
+          "localCopilot.chat.contextLength": {
+            "type": "number",
+            "default": 16384,
+            "minimum": 2048,
+            "maximum": 262144,
+            "markdownDescription": "Model context window (`num_ctx`) for code intelligence. Larger = more code in the prompt, more VRAM."
+          },
+          "localCopilot.chat.gpuLayers": {
+            "type": "number",
+            "default": -1,
+            "minimum": -1,
+            "markdownDescription": "Layers of the intelligence model placed on the GPU (Ollama `num_gpu`). `-1` = auto: when the GPU cannot hold both models, cap it so the completion model stays loaded (no 3–7 s model swaps; on an 8 GB GPU the 9B then streams ~26 tok/s instead of ~42). `999` = all layers (the server swaps models as needed). `0` = CPU only."
+          },
+          "localCopilot.chat.maxOutputTokens": {
+            "type": "number",
+            "default": 4096,
+            "minimum": 256,
+            "maximum": 32768,
+            "description": "Max generated tokens per answer (thinking included)."
+          },
+          "localCopilot.chat.temperature": {
+            "type": "number",
+            "default": 0.2,
+            "minimum": 0,
+            "maximum": 1.5
+          },
+          "localCopilot.chat.keepAlive": {
+            "type": "string",
+            "default": "10m",
+            "description": "How long the server keeps the intelligence model loaded."
+          },
+          "localCopilot.codeLens.enabled": {
+            "type": "boolean",
+            "default": true,
+            "markdownDescription": "Show actions above directive comments such as `// Review the function below for security issues` or `# Explain this`."
+          }
+        }
+      },
+      {
+        "title": "Codebase index",
+        "order": 4,
+        "properties": {
+          "localCopilot.index.enabled": {
+            "type": "boolean",
+            "default": true,
+            "description": "Index symbols, imports and chunks of the workspace (stored in VS Code's workspace storage, never in your repo)."
+          },
+          "localCopilot.index.include": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "default": [],
+            "description": "Extra glob patterns to index (the built-in list covers common code and doc files)."
+          },
+          "localCopilot.index.exclude": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "default": [],
+            "description": "Extra glob patterns to skip (node_modules, build outputs, Unity Library/Temp… are always skipped)."
+          },
+          "localCopilot.index.respectGitignore": {
+            "type": "boolean",
+            "default": true
+          },
+          "localCopilot.index.maxFiles": {
+            "type": "number",
+            "default": 6000,
+            "minimum": 100,
+            "maximum": 50000
+          },
+          "localCopilot.index.maxFileSizeKB": {
+            "type": "number",
+            "default": 512,
+            "minimum": 16,
+            "maximum": 4096
+          },
+          "localCopilot.embeddings.enabled": {
+            "type": "boolean",
+            "default": true,
+            "description": "Compute local embeddings in the background for semantic codebase search (needs an embedding model)."
+          },
+          "localCopilot.embeddings.model": {
+            "type": "string",
+            "default": "qwen3-embedding:0.6b",
+            "description": "Local embedding model."
+          }
+        }
+      },
+      {
+        "title": "Security analysis",
+        "order": 5,
+        "properties": {
+          "localCopilot.security.llmReview": {
+            "type": "boolean",
+            "default": true,
+            "description": "After the static rules, ask the local model to confirm findings and look for more. Off = static rules only (instant)."
+          },
+          "localCopilot.security.scanOnSave": {
+            "type": "boolean",
+            "default": false,
+            "description": "Run the static security rules (no LLM) on every save and show the results as diagnostics."
+          }
+        }
+      },
+      {
+        "title": "Interface",
+        "order": 6,
+        "properties": {
+          "localCopilot.statusBar.enabled": {
+            "type": "boolean",
+            "default": true
+          },
+          "localCopilot.metrics.enabled": {
+            "type": "boolean",
+            "default": true,
+            "description": "Keep latency / acceptance metrics in local storage (never sent anywhere)."
+          }
+        }
+      }
+    ]
+  },
+  "scripts": {
+    "build": "node esbuild.mjs",
+    "watch": "node esbuild.mjs --watch",
+    "typecheck": "tsc --noEmit -p .",
+    "test": "vitest run",
+    "test:unit": "vitest run",
+    "test:integration": "node esbuild.mjs --tests && node out/test/integration/runTests.js",
+    "check:egress": "node scripts/check-no-egress.mjs",
+    "bench": "node scripts/bench-models.mjs",
+    "visual": "node test/visual/serve.mjs",
+    "package": "node esbuild.mjs --production && node scripts/check-no-egress.mjs && vsce package --no-dependencies -o dist/local-copilot.vsix",
+    "release": "node scripts/release.mjs",
+    "vscode:prepublish": "node esbuild.mjs --production"
+  },
+  "devDependencies": {
+    "@types/mocha": "^10.0.10",
+    "@types/node": "^22.0.0",
+    "@types/vscode": "1.105.0",
+    "@vscode/test-electron": "^3.1.0",
+    "@vscode/vsce": "^4.0.0",
+    "esbuild": "^0.28.2",
+    "mocha": "^12.0.3",
+    "typescript": "^7.0.2",
+    "vitest": "^5.0.3"
+  }
+}
